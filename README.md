@@ -2,7 +2,7 @@
 
 This project is an example app that use the API CLOUD (French TV programmes and VOD)
 
-1. Ask you ask your credentials here : https://dev.bouyguestelecom.fr/nous-contacter/
+1. Ask your credentials here : https://dev.bouyguestelecom.fr/nous-contacter/
 2. Create a ".env" file in this repository with this inside :
 ```
 # Credentials needed to authenticate the current App and grant a valid token
