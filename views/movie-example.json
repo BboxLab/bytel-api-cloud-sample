@@ -1,0 +1,90 @@
+{
+    "_id": "57e496338e6e4d22fd7ccb63",
+    "media": [{
+        "url": "https://api.bbox.fr/v1.3/public/images/programmes/144650041.jpg",
+        "width": 480,
+        "height": 270,
+        "aspectRatio": "1.77",
+        "mediaTypeCode": "300"
+    }],
+    "audioInfo": [{
+        "soundMode": "Stéréo",
+        "language": "FRA"
+    }, {
+        "soundMode": "Stéréo",
+        "language": "ANG"
+    }],
+    "programInfo": {
+        "shortTitle": "L'homme au masque de fer",
+        "longTitle": "L'homme au masque de fer",
+        "originalTitle": "The Man in the Iron Mask",
+        "genre": ["Action", "Film"],
+        "subGenre": ["Action"],
+        "shortSummary": "En 1660, les Mousquetaires ....",
+        "longSummary": "En 1660, Athos, Porthos et Aramis ....",
+        "seriesInfo": {
+            "seasonPremiere": false
+        },
+        "character": [{
+            "firstName": "John",
+            "lastName": "Malkovich",
+            "role": "Athos",
+            "function": "Acteur",
+            "rank": 3
+        }, {
+            "firstName": "Anthony",
+            "lastName": "Pratt",
+            "role": "",
+            "function": "Décors",
+            "rank": 1
+        }, {
+            "firstName": "Alexandre",
+            "lastName": "Dumas père",
+            "role": "",
+            "function": "Origine Scénario",
+            "rank": 1
+        }],
+        "provider": "CPF",
+        "changed": false,
+        "duration": "92min",
+        "countryOfOrigin": "Grande-Bretagne",
+        "productionDate": 1998,
+        "publicRank": "2.99452472",
+        "pressRank": "3.0",
+        "externalId": "75156"
+    },
+    "productId": "EV11397860",
+    "parentalGuidance": "France.01",
+    "lastUpdateTime": "2016-09-23T01:35:29.000Z",
+    "epgIdList": [{
+        "value": [342, 38]
+    }],
+    "reschedule": [{
+        "startTime": "2016-09-25T06:14:00.000Z",
+        "endTime": "2016-09-25T08:24:00.000Z",
+        "epgChannelNumber": 657,
+        "language": "FRE",
+        "eventId": "144650129"
+    }, {
+        "startTime": "2016-09-29T20:35:00.000Z",
+        "endTime": "2016-09-29T22:45:00.000Z",
+        "epgChannelNumber": 657,
+        "language": "FRE",
+        "eventId": "144650439"
+    }, {
+        "startTime": "2016-10-01T22:35:00.000Z",
+        "endTime": "2016-10-02T00:45:00.000Z",
+        "epgChannelNumber": 657,
+        "language": "FRE",
+        "eventId": "146316046"
+    }],
+    "eventId": "144650041",
+    "startTime": "2016-09-23T11:10:00.000Z",
+    "endTime": "2016-09-23T13:20:00.000Z",
+    "epgChannelNumber": 657,
+    "positionId": 43,
+    "thumb": "https://api.bbox.fr/v1.3/public/images/programmes/144650041.jpg",
+    "channelName": "TF1",
+    "channelLogo": "https://api.bbox.fr/v1.3/public/images/programmes/144650041.jpg",
+    "time": "ven. 10h00"
+}

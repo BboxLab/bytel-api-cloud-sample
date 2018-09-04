@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-control" content="public" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1" />
+
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+    <meta name="autor" content="Julien G - Lab Innovation - Bytel 2016" />
+
+    <link rel="me" href="https://twitter.com/TeamBboxmiami" />
+    <link rel="shortcut icon" href="https://bytel.tv/node/img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="https://bytel.tv/node/img/favicon.ico" type="image/x-icon" />
+<% if (locals.programInfo) { %>
+
+    <title>B-bot TV - <%= programInfo.shortTitle %></title>
+
+    <link rel="canonical" href="https://bytel.tv/node/epg/<%= eventId %>" />
+
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="<%= programInfo.shortTitle %>" />
+    <meta property="og:description" content="[<%= programInfo.subGenre[0] %>] <%= channelName %>, <%= time %>, durée <%= programInfo.duration %>. <%= programInfo.shortSummary %>" />
+    <meta property="og:url" content="https://bytel.tv/node/epg/<%= eventId %>" />
+    <meta property="og:site_name" content="B-bot TV" />
+    <meta property="fb:app_id" content="496719270527694" />
+    <meta property="article:tag" content="programme" />
+    <meta property="article:tag" content="tv" />
+    <meta property="og:image" content="<%= thumb %>" />
+    <meta property="og:image:secure_url" content="<%= thumb %>" />
+    <!--// <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" /> //-->
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:description" content="[<%= programInfo.subGenre[0] %>] <%= channelName %>, <%= time %>, durée <%= programInfo.duration %>. <%= programInfo.shortSummary %>" />
+    <meta name="twitter:title" content="<%= programInfo.shortTitle %>" />
+    <meta name="twitter:image" content="<%= thumb %>" />
+
+<% } else { %>
+
+    <title>B-bot TV</title>
+
+<% } %>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://bytel.tv/node/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://bytel.tv/node/css/jquery-ui.css" />
+    <link rel="stylesheet" href="https://bytel.tv/node/css/main.css" />
+    <link rel="stylesheet" href="https://bytel.tv/node/css/fiche_programme.css" />
+
+</head>
+
+<body>
+    <% if (locals.mobile !== true) { %>
+
+    <nav class="top-nav">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="http://m.me/bbottv" title="B-bot TV sur Messenger" class="page-title">
+                    <img src="https://bytel.tv/node/img/avatar-02-mini.jpg" alt="Avatar B-bot TV" /><h2> B-bot TV</h2>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <!--// &nbsp;<h2 class="header">➜ Fiche programme</h2> //-->
+        </div>
+        <div class="row">
+            <% if (locals.noadd !== true) { %>
+            <div class="col s12 m7">
+            <% } %>
+    <% } %>
+                <% if (locals.programInfo) { %>
+                <div class="card z-depth-3">
+                    <div class="card-image">
+                        <img src="<%= thumb %>" alt="<%= programInfo.longTitle %>" class="jacquette" id="jacquette" />
+                        <span class="card-title" title="Chaines et #numéro de chaine Bbox"><%= channelName %> (Ch. <%= positionId %>)</span>
+                    </div>
+                    <div class="card-content">
+                       <!--  <img src="<%= channelLogo %>" alt="<%= channelName %>" class="channelLogo" id="channelLogo" /> --><p class="flow-text"><strong><%= programInfo.longTitle %></strong> <% locals.rating = 0; if (programInfo.publicRank > 0) locals.rating = parseInt(103 * (programInfo.publicRank / 5), 10);  if (locals.rating > 0) { %><span class="rating" style="background-image:url('https://bytel.tv/node/img/5-stars.png');width:<%= locals.rating %>px;height:20px;display:inline-block;" title="Note du public : <%= (programInfo.publicRank * 1).toFixed(2) %> / 5"></span><% } %><br />
+                        <%= time %>, <%= programInfo.duration %></p>
+                        <p class="myText"><% if (programInfo.longSummary) { %><%= programInfo.longSummary %><% } else { %><%= programInfo.shortSummary %><% } %></p>
+                        <blockquote><span><em><%= programInfo.genre[0] %> (<%= programInfo.subGenre[0] %>)<% if (programInfo.countryOfOrigin && programInfo.productionDate) { %>, <%= programInfo.countryOfOrigin %>, <%= programInfo.productionDate %><% } %>.</em></span><br />
+                         <% if (locals.programInfo.characterLists) { %><%- programInfo.characterLists %><% } %>
+                        </blockquote>
+                    </div>
+                    <% if (locals.mobile !== true) { %>
+                    <div class="card-action"><!-- <a href="http://m.me/bbottv " class="waves-effect waves-light btn-flat right"><i class="material-icons">textsms</i> Chatter avec B-bot TV</a> --><a href="http://m.me/bbottv " class="waves-effect right btn-flat blue-text text-darken-4">B-bot TV sur Messenger</a><div class="fb-share-button" data-href="https://bytel.tv/node/epg/<%= eventId %>" data-layout="button" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbytel.tv%2Fnode%2Fepg%2Fprogrammes%2F<%= eventId %>&amp;src=sdkpreparse">Partager</a></div></div>
+                    <% } %>
+                </div>
+                <% } else { %>
+                    <p class="flow-text"><strong>Programme inconnu</strong><br />
+                    Désolé nous ne trouvons pas le programme recherché ou celui-ci n'existe plus :-(</p>
+                <% } %>
+    <% if (locals.mobile !== true) { %>
+            <% if (locals.noadd !== true) { %>
+            </div>
+            <div class="col s12 m5">
+                <!--// <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div> //-->
+                <!--// <div class="fb-page" data-href="https://www.facebook.com/bytelbottv/" data-tabs="messages" data-width="300" data-height="500" data-small-header="true">
+                    <div class="fb-xfbml-parse-ignore"><blockquote></blockquote></div>
+                </div>  //-->
+                <p title="Publicité Bouygues Telecom" class="pub"><span class="z-depth-1" style="background-image:url('https://bytel.tv/node/img/bouygues-telecom-pub.png');width:300px;height:499px;display:block;" onClick="window.open('https://www.bouyguestelecom.fr', '_blank');"></span></p>
+                <br />
+                <!-- <a href="https://www.bouyguestelecom.fr" title="Bouygues Telecom" class="bytelLogo">
+                    <img src="https://bytel.tv/node/img/logo-bouygues-telecom.svg" alt="Logo Bouygues Telecom" />
+                </a> -->
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <footer class="footer-copyright">
+        <div class="container">
+            Innovation Lab - Bouygues Telecom © 2016 Tous droits réservés - <a href="https://www.corporate.bouyguestelecom.fr/mentions-legales/" class="orange-text text-lighten-3">Mentions Légales</a><br />
+            &nbsp;
+        </div>
+    </footer>
+    <% } %>
+    <div id="fb-root"></div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script>
+        // window.fbAsyncInit = function() {
+        //     FB.init({
+        //         appId: '496719270527694',
+        //         xfbml: true,
+        //         version: 'v2.7'
+        //     });
+        // };
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.7&appId=496719270527694";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        
+        $('img').error(function() { // Third party images
+            if (this.id === 'channelLogo') $(this).attr('src', 'https://bytel.tv/node/img/default_channels.png');
+            else if (this.id === 'jacquette') $(this).attr('src', 'https://bytel.tv/node/img/default_programmes.png');
+        });
+
+        if (window.location.hash && window.location.hash === '#noad') $('.pub').remove(); // ;)
+    </script>
+</body>
+</html>

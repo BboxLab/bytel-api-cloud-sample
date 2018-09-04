@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-control" content="public" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1" />
+
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+    <meta name="autor" content="Julien G - Lab Innovation - Bytel 2016" />
+
+    <link rel="me" href="https://twitter.com/TeamBboxmiami" />
+    <link rel="shortcut icon" href="/node/img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/node/img/favicon.ico" type="image/x-icon" />
+
+    <title>B-bot TV - Searcher</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <!-- <link rel="stylesheet" href="/node/css/materialize.min.css" /> -->
+    <!--  <link rel="stylesheet" href="/node/css/jquery-ui.css" />  -->
+    <link rel="stylesheet" href="/node/css/main.css" />
+    <!-- <link rel="stylesheet" href="/node/css/fiche_programme.css" /> -->
+
+    <link rel="stylesheet" type="text/css" href="/node/css/jsgrid.css" />
+    <link rel="stylesheet" type="text/css" href="/node/css/jsgrid-theme.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            padding: 0 10px;
+            background: whitesmoke;
+        }
+        body {
+            font-size: 12px;
+        }
+        a {
+            color: #009dcc;
+        }
+
+        .struct {
+            height: 100%;
+            width: 100%;
+        }
+        /* #q {
+            width: 50%;
+            padding: 4px;
+            font-size: 18px;
+        }
+        #searcher {
+            padding: 10px;
+        }
+        #ok {
+            padding: 4px;
+            font-size: 18px;
+            color: #5f5f5f;
+        } */
+
+        #stats {
+            position: absolute;
+            right: 23px;
+            top: -500px;
+            width: 500px;
+            background: #ececec;
+            border: 1px solid #adadad;
+            margin: -1px 0 0 0;
+            padding: 20px 20px 0 20px;
+            box-shadow: 4px 4px 10px #cecece;
+        }
+            #menuStats {
+                height:50px;
+                line-height:50px;
+            }
+        
+        #export {
+            position: absolute;
+            right: 585px;
+            top: -500px;
+            width: 280px;
+            background: #ececec;
+            border: 1px solid #adadad;
+            margin: -1px 0 0 0;
+            padding: 20px 20px 0 20px;
+            box-shadow: 4px 4px 10px #cecece;
+        }
+            #menuExport {
+                height:50px;
+                line-height:50px;
+            }
+            #exportData {
+                width:100%;
+                height:100px;
+            }
+
+        .myTooltip {
+            top:10%;
+            left:25%;
+            width:50%;
+            height: 80%;
+            background:#FFFFFF;
+            color:#FFFD69;
+            position: absolute;
+            z-index: 9999;
+        }
+        .myTooltipWrap {
+            max-width: 180px;
+            display: inline-block;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <table class="struct">
+        <tr>
+            <td height="50"><form id="searcher"><h2>Search EPG : <!-- <input type="text" name="q" id="q"/> <button type="submit" id="ok">Ok</button> --></h2></form></td>
+        </tr>
+        <tr>
+            <td id="jsGrid"></td>
+        </tr>
+    </table>
+
+    <!-- <footer class="footer-copyright">
+        <div class="container">
+            Innovation Lab - Bouygues Telecom © 2016 Tous droits réservés - <a href="https://www.corporate.bouyguestelecom.fr/mentions-legales/" class="orange-text text-lighten-3">Mentions Légales</a><br />
+            &nbsp;
+        </div>
+    </footer> -->
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <!-- <script src="/node/js/materialize.min.js"></script> -->
+    <script src="/node/js/jsgrid.min.js"></script>
+    <script src="/node/js/moment.min.js"></script>
+    <script src="/node/js/moment.fr.js"></script>
+    <script>
+        $(function () {
+
+            var $grid = $('#jsGrid');
+            var $exportData = null;
+            var channels = null;
+
+            function doGrid() {
+
+                $grid.jsGrid({
+                    height: '96%',
+                    width: '98%',
+
+                    heading: true,
+                    filtering: true,
+                    inserting: false,
+                    editing: false,
+                    sorting: true,
+                    selecting: true,
+                    multiselect: true,
+                    multiboxonly: false,
+                    //beforeSelectRow: function (rowid, e) {
+                        //return $(e.target).is('input[type=checkbox]');
+                    //}
+                    
+                    autoload: true,
+                    paging: true,
+                    pageLoading: true,
+                    pageSize: 500, //    9999,
+                    pageIndex: 1,
+
+                    noDataContent: '...',
+                    loadIndication: true,
+                    loadIndicationDelay: 0,
+                    loadMessage: "Please, wait...",
+                    loadShading: true,
+
+                    controller: {
+                        loadData: function (filter) {
+                            console.log('filter', filter);
+
+                            var d = $.Deferred();
+                            var startIndex = (filter.pageIndex - 1) * filter.pageSize;
+
+                            $.ajax({
+                                type: 'GET',
+                                url: 'https://bytel.tv/node/epg-data/?page='+(filter.pageIndex || 1)+'&summary='+(filter.summary || '')+'&title='+(filter.title || ''),
+                                dataType: 'json',
+                                success: function(data, status, xhr) {
+
+                                    //console.log('Req total', data.length, 'total', xhr.getResponseHeader('X-total'));
+                                    d.resolve({
+                                        itemsCount: xhr.getResponseHeader('X-total'),
+                                        data: data
+                                                //.slice(startIndex, startIndex + filter.pageSize)
+                                                /*.filter(function(prog) {
+                                                    return (prog.positionId > 0 && prog.duration > '00:15:00' && prog.summary);
+                                                })*/
+                                                .map(function(prog) {
+
+                                                    if (filter.choose)
+                                                        $exportData.val($exportData.val()+prog.eventId+',');
+                                                    else if (filter.choose === false) {
+                                                        t = new RegExp(prog.eventId+',');
+                                                        $exportData.val($exportData.val().replace(t, ''));
+                                                    }
+ 
+                                                    return {
+                                                        epgChannelNumber: prog.epgChannelNumber,
+                                                        title: prog.title,
+                                                        summary: prog.summary,
+                                                        eventId: prog.eventId,
+                                                        externalId: prog.externalId,
+                                                        thumb: prog.thumb,
+                                                        choose: filter.choose || false
+                                                    };
+                                                })
+                                    });
+                                }
+                            });
+
+                            return d.promise();
+                        }
+                    },
+                    onPageChanged: function(args) {
+                        console.log('onPageChanged', args);
+                        //if ($('.jsgrid-filter-row input:first').prop('checked')) $('input').prop('checked', true);
+                        //else $('input').removeProp('checked');
+                    },
+                    onRefreshed: function(args) {
+                        console.log('onRefreshed', args);
+                    },
+                    rowClick: function (args) { // item,itemIndex,event
+                        //console.log("Edit", args.item, args);
+                        var item = args.item;
+                        item.choose = !item.choose
+                        $grid.jsGrid('updateItem', item);
+
+                        var exportData = $exportData.val();
+                        var t = new RegExp(item.eventId);
+
+                        if (item.choose && !t.test(exportData)) exportData += item.eventId+',';
+                        else if (!item.choose && t.test(exportData)) {
+                            t = new RegExp(item.eventId+',')
+                            exportData = exportData.replace(t, '');
+                        }
+                        $exportData.val(exportData);
+                    },
+                    fields: [
+                        {
+                            name: "epgChannelNumber", title: "Channel", type: "number", width: 30,
+                            itemTemplate: function (value, item) {
+                                return (channels[value] ? channels[value].name : '-');
+                            }
+                        },
+                        { name: "title", type: "text", width: 50 },
+                        { name: "summary", type: "text", width: 150 },
+                        { name: "eventId", type: "number", width: 20 },
+                        { name: "externalId", type: "number", width: 20 },
+                        {
+                            name: "choose", title: "selected", type: "checkbox", width: 5, align: "center",
+                            itemTemplate: function (value) {
+                                return $('<input type="checkbox" name="selected" '+(value ? 'checked="checked"' : '')+'"/>');
+                            }
+                        },
+                        {
+                            name: "eventId", title: "Infos", type: "number", width: 20, align: "center",
+                            itemTemplate: function (value) {
+                                return $('<a href="https://bytel.tv/node/epg/'+value+'?mobile=1" class="hoverable">Fiche</a>');
+                            }
+                        }
+                    ]
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: 'https://bytel.tv/node/epg-channels',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log('Channels ok', data);
+                    channels = data;
+                    doGrid();
+                }
+            });
+
+            $('body').append('<div id="export"><textarea id="exportData"></textarea><div id="menuExport"><a id="lienExport" href="#">Export des programmes sélectionnés</a></div></div>');
+            $exportData = $('#exportData');
+
+            var exportHeight = $('#export').outerHeight();
+                lienExportOpen = 1;
+            $('#lienExport')
+                .on('click', function() {
+                    if (lienExportOpen) $('#export').css('top', -(exportHeight - 50)+'px');
+                    else $('#export').css('top', '0');
+                    lienExportOpen = !lienExportOpen;
+                })
+                .click();
+
+
+            var logsToday = moment().format('YYYYMMDD');
+            console.log('logsToday', logsToday);
+
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.bbox.fr/public/stats/epg-stats-'+logsToday+'.json',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log('epg-stats ', data);
+
+                    var statsTitles = {
+                        timestamp:            'Date Iso fin de la tâche',
+                        totalPackProcessed:   'Nb de packages processés',
+                        totalProgrammes:      'Nb de progammes processés',
+                        totalBddProgrammes:   'Nb total de programmes en BDD',
+                        totalBddSizes:        'Taille de la BDD',
+                        programmeDouble:      'Programmes en double',
+                        empthyJson:           'Fichier XML vides dans les packages',
+                        unknowChannels:       'Chaines EPG inconnue (epgChannelNumber)',
+                        imagesToProcess:      'Nouvelles images livrées',
+                        allGenres:            'Nb de genres distincts'
+                    };
+
+                    var statsHtml = '<table width="100%">';
+                    for (var key in data) {
+                        statsHtml += '<tr><td>'+statsTitles[key]+'</td><td><strong>'+data[key]+'</strong></td></tr>';
+                    }
+                    statsHtml += '</table>';
+                    $('body').append('<div id="stats">'+statsHtml+'<div id="menuStats"><a id="lienStats" href="#">Statistiques traitement EPG</a></div></div>');
+                    var statsHeight = $('#stats').outerHeight();
+                        lienStatsOpen = 1;
+                    $('#lienStats')
+                        .on('click', function() {
+                            if (lienStatsOpen) $('#stats').css('top', -(statsHeight - 50)+'px');
+                            else $('#stats').css('top', '0');
+                            lienStatsOpen = !lienStatsOpen;
+                        })
+                        .click();
+                }
+            });
+            
+            /* $('#searcher').submit(function(e) {
+                e.preventDefault();
+                $grid
+                    .jsGrid("loadData", { summary: $q.val() }) // loadData with custom filter
+                    .done(function() {
+                        console.log("data loaded for ", $q.val());
+                    });
+            }); */
+
+            $('body')
+                .on('mouseenter', '.hoverable', function() {
+                    $('#pop').remove();
+                    $('body').append('<iframe id="pop" class="myTooltip" src="'+$(this).attr('href')+'"></iframe>');
+                })
+                .on('mouseleave', '.hoverable', function() {
+                    $('#pop').remove();
+                });
+
+        });
+
+    </script>
+
+</body>
+</html>
