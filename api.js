@@ -1,9 +1,14 @@
+/* jshint node: true, devel: true */
+
 'use strict';
 
 var request   = require('request'),
     moment    = require('moment'),
     fs        = require('fs'),
     crypto    = require('crypto');
+
+
+if (!fs.existsSync('./temp')) fs.mkdirSync('./temp'); // Data are cached here
 
 const db = false; // Print console log ?
 

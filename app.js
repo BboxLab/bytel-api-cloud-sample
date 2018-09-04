@@ -13,12 +13,12 @@ const
     api                  = require('./api');
 
 const
-	PORT = 3000,
-    oneMonth = 86400000 * 30;
+	PORT                 = 3000,
+    oneMonth             = 86400000 * 30;
 
 app.set('port', PORT);
 app.set('trust proxy', 1);
-app.set('view engine', 'ejs'); // npm install ejs -g
+app.set('view engine', 'ejs');
 
 ///////////////////////////// Middleware /////////////////////////////
 
@@ -64,13 +64,8 @@ app.get('/epg/*', function(req, res) { // https://bytel.tv/node/epg/144650041
             payload = {};
             res.status(404);
         }
-    
-        payload.thumb = 'https://api.bbox.fr/v1.3/public/magick/?eventId='+payload.eventId;
-
-        //app.set('etag', false);
         res.setHeader('Cache-Control', 'public, max-age='+oneMonth);
         res.render('fiche_programme', payload);
-        
     }, parseInt(req.params['0'])); // req.params['0'] == eventId
 });
 
@@ -86,13 +81,16 @@ app.use('/', function(req, res) {
   <body>
     <div class="container">
         <div class="row">
-            <h1>Index for sample API Cloud APP(</h1>
+            <h1>Index for sample API Cloud APP</h1>
             <p>Channels list:
             <br />
             <a href="./epg-channels">./epg-channels</a></p>
             <p>TV Programmes list:
             <br />
             <a href="./epg-programme">./epg-programme</a></p>
+            <p>One programme (Need an existing eventID, take one in the fresh list):
+            <br />
+            <a href="./epg/185758633">./epg/185758633</a></p>
         </div>
     </div>
   </body>

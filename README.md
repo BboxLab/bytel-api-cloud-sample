@@ -2,16 +2,21 @@
 
 This project is an example app that use the API CLOUD (French TV programmes and VOD)
 
-# Welcome to BboxLab
+1. Ask you ask your credentials here : https://dev.bouyguestelecom.fr/nous-contacter/
+2. Create a ".env" file in this repository with this inside :
+```
+# Credentials needed to authenticate the current App and grant a valid token
+APP_ID=xxx-xxx
+APP_SECRET=ABC123ABC123ABC123
+```
+3. Open a shell and type: `nodemon .\app.js`
+4. Open your browser http://localhost:3000
+
+# Welcome to BboxLab : BboxAPI on the Cloud
 
 The dev. community for Bbox Open APIs: https://dev.bouyguestelecom.fr and https://github.com/BboxLab
-Bbox Open APIs allows you to control services from Bouygues Telecom devices and platforms, through HTTP REST WebServices. The set of APIs include 
 
-# BboxAPI on the Cloud
-
-Documentation: https://api.bbox.fr/doc/ (here)
-Nous contacter: https://dev.bouyguestelecom.fr
-Common API specification: http://swagger.io/specification/
+**Documentation**: https://api.bbox.fr/doc/
 
 **BasePath**: https://api.bbox.fr/v1.3/
 
@@ -30,6 +35,7 @@ https://api.bbox.fr/v1.3/media/live?period=0 : All the programmes now on live fo
 https://api.bbox.fr/v1.3/media/live?period=6 : All programmes for all channels for the next 6 days
 https://api.bbox.fr/v1.3/media/live?epgChannelNumber=1 : All the programmes of a specific channel
 a lot of others various parameters can be mixed too
+
 Changelogs V1.3:
 
 Full PDS (Plan Of Service) for channels with 5 "profils" and associated "PositionId" (ZapId) : ADSL, TNT, OTT, FTTH or CABLE
