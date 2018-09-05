@@ -12,6 +12,10 @@ APP_SECRET=ABC123ABC123ABC123
 3. Open a shell and type: `nodemon .\app.js`
 4. Open your browser http://localhost:3000
 
+![Preview1](https://github.com/BboxLab/bytel-api-cloud-sample/raw/master/public/img/bytel-cloud-sample-app-screen1.png)
+
+![Preview2](https://github.com/BboxLab/bytel-api-cloud-sample/raw/master/public/img/bytel-cloud-sample-app-screen2.png)
+
 # Welcome to BboxLab : BboxAPI on the Cloud
 
 The dev. community for Bbox Open APIs: https://dev.bouyguestelecom.fr and https://github.com/BboxLab
