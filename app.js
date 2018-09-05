@@ -35,6 +35,7 @@ app.get('/epg-channels/', function(req, res) {
 app.get('/epg-programme/', function(req, res) {
 
     var options = {
+        // mode: 'full', // Full infos ?
         // timeStamp: timeStamp,
         // channel: findChannel,
         // genres: findGenres,

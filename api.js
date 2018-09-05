@@ -246,7 +246,7 @@ module.exports = {
 
         // BUILD URL
 
-        var urlParams = 'https://api.bbox.fr/v1.3/media/live/?mode=simple';
+        var urlParams = 'https://api.bbox.fr/v1.3/media/live/';
 
         if (options.timeStamp) {
             if (options.week) 
@@ -263,6 +263,11 @@ module.exports = {
         }
         else urlParams += '&period=6';
 
+        if (options.mode === 'full') // full infos for each programme ?
+            urlParams += '&mode=full';
+        else
+            urlParams += '&mode=simple';
+
         if (options.channel || options.channel === 0)
             urlParams += '&epgChannelNumber=' + options.channel;
         if (options.genres)
@@ -275,7 +280,6 @@ module.exports = {
             urlParams += '&title=' + encodeURIComponent(options.recherche);
         if (options.longSummary)
             urlParams += '&longSummary=' + encodeURIComponent(options.longSummary);
-        
         if (options.page)
             urlParams += '&page=' + options.page;
         if (options.limit)
